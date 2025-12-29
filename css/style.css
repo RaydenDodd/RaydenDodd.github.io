@@ -47,7 +47,7 @@ a:hover { opacity: .92; }
 }
 
 .hero{
-  min-height: calc(100vh - 58px);
+  min-height: 74vh;
   display: grid;
   place-items: center;
   padding: 34px 18px 56px;
@@ -116,7 +116,7 @@ h1{ margin: 16px 0 6px; font-size: clamp(30px, 3vw, 44px); }
 
 .teaser{
   position: relative;
-  padding: 88px 18px;
+  padding: 48px 18px;
   border-top: 1px solid var(--line);
 }
 .teaser-inner{
