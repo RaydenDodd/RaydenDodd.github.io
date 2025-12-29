@@ -14,9 +14,9 @@ html, body { margin: 0; padding: 0; }
 body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
   background:
-    radial-gradient(1400px 800px at 12% 8%, rgba(190,0,40,.34), transparent 58%),
-    radial-gradient(1200px 700px at 88% 18%, rgba(110,0,180,.36), transparent 55%),
-    radial-gradient(1000px 600px at 50% 85%, rgba(60,0,120,.28), transparent 60%),
+    radial-gradient(1500px 900px at 18% 10%, rgba(210,0,45,.42), transparent 58%),
+    radial-gradient(1200px 700px at 82% 22%, rgba(140,0,30,.36), transparent 60%),
+    radial-gradient(1000px 600px at 50% 85%, rgba(90,0,25,.30), transparent 62%),
     #0b0f17;
   color: var(--text);
 }
