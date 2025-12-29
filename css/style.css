@@ -135,34 +135,34 @@ h1{ margin: 16px 0 6px; font-size: clamp(30px, 3vw, 44px); }
   position: relative;
   padding: 48px 18px;
   border-top: 1px solid var(--line);
+  background: transparent;
 }
+
 .teaser-inner{
-  width: min(920px, 100%);
-  margin: 0 auto;
-  border: 1px solid var(--line);
-  background: rgba(10, 14, 22, .55);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius);
-  padding: 26px;
-  box-shadow: var(--shadow);
+  width: min(1200px, 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 20px 70px rgba(0,0,0,.55);
+  padding: 30px;
+  background:
+    linear-gradient(rgba(10,10,20,.55), rgba(10,10,20,.78)),
+    var(--panel-bg) center / cover no-repeat;
 }
-.teaser h2{ margin: 0 0 6px; font-size: 30px; }
-.teaser p{ margin: 0 0 14px; color: var(--muted); }
 
 .teaser-projects{
-  background-image: url("../assets/projects-bg.jpg");
-  background-size: cover;
-  background-position: center;
+  background-image: none;
 }
 .teaser-projects .overlay{
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(11,15,23,.40), rgba(11,15,23,.78));
-  pointer-events: none;
+  display: none;
+}
+.teaser-projects{
+  --panel-bg: url("../assets/projects-panel.jpg");
 }
 
 .teaser-games{
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  background: none;
+  --panel-bg: url("../assets/games-panel.jpg");
 }
 
 .page{
