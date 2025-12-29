@@ -111,6 +111,57 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px); }
 }
 .bubble:hover{ background:rgba(255,255,255,.1); }
 
+.bubble{
+  position: relative;
+  backdrop-filter: blur(12px) saturate(140%);
+  background: rgba(255,255,255,.06);
+}
+
+.bubble.ig{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(225,48,108,.12),
+      rgba(225,48,108,.06)
+    ),
+    rgba(255,255,255,.06);
+}
+
+.bubble.yt{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,0,0,.12),
+      rgba(255,0,0,.06)
+    ),
+    rgba(255,255,255,.06);
+}
+
+.bubble.li{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,102,194,.12),
+      rgba(10,102,194,.06)
+    ),
+    rgba(255,255,255,.06);
+}
+
+.bubble.gh{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(120,120,120,.12),
+      rgba(120,120,120,.05)
+    ),
+    rgba(255,255,255,.06);
+}
+
+.bubble:hover{
+  background-blend-mode: screen;
+  filter: brightness(1.05);
+}
+
 .btn{
   display:inline-block;
   padding:11px 14px;
