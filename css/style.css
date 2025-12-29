@@ -201,7 +201,7 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px); }
 .teaser p{ margin:0 0 14px; color:var(--muted); }
 
 .teaser-projects{ --panel-bg:url("../assets/1C15215B-51D5-48B0-B963-667BA2DA95B7.png"); }
-.teaser-games{ --panel-bg:url("../assets/games-panel.jpg"); }
+.teaser-games{ --panel-bg:url("../assets/8368325D-AD37-4675-A0C2-290F475870FB.png"); }
 
 .page{
   width:min(980px,100%);
