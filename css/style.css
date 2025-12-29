@@ -117,49 +117,37 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px); }
   background: rgba(255,255,255,.06);
 }
 
+.bubble{
+  backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255,255,255,.045);
+}
+
 .bubble.ig{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(225,48,108,.12),
-      rgba(225,48,108,.06)
-    ),
-    rgba(255,255,255,.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(225,48,108,.25),
+    0 10px 24px rgba(0,0,0,.22);
 }
 
 .bubble.yt{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,0,0,.12),
-      rgba(255,0,0,.06)
-    ),
-    rgba(255,255,255,.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,0,0,.22),
+    0 10px 24px rgba(0,0,0,.22);
 }
 
 .bubble.li{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(10,102,194,.12),
-      rgba(10,102,194,.06)
-    ),
-    rgba(255,255,255,.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(10,102,194,.28),
+    0 10px 24px rgba(0,0,0,.22);
 }
 
 .bubble.gh{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(120,120,120,.12),
-      rgba(120,120,120,.05)
-    ),
-    rgba(255,255,255,.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(180,180,180,.22),
+    0 10px 24px rgba(0,0,0,.22);
 }
 
 .bubble:hover{
-  background-blend-mode: screen;
-  filter: brightness(1.05);
+  background: rgba(255,255,255,.065);
 }
 
 .btn{
