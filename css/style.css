@@ -55,15 +55,25 @@ a:hover { opacity: .92; }
   padding: 34px 18px 56px;
 }
 .hero-card{
-  width: min(920px, 100%);
+  width: 100%;
+  max-width: 1200px;
+  min-height: 360px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   text-align: center;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+
   background:
-    linear-gradient(rgba(10,10,20,.70), rgba(10,10,20,.90)),
+    linear-gradient(rgba(10,10,20,.35), rgba(10,10,20,.55)),
     url("../assets/edit-4539.jpeg") center / cover no-repeat;
-  border-radius: var(--radius);
-  padding: 28px;
+
+  border-radius: 28px;
+  padding: 36px 28px;
 }
 .avatar{
   width: 140px;
