@@ -55,10 +55,14 @@ a:hover { opacity: .92; }
   padding: 34px 18px 56px;
 }
 .hero-card{
+  width: min(920px, 100%);
+  text-align: center;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
   background:
-    linear-gradient(rgba(15,15,30,.70), rgba(15,15,30,.85)),
+    linear-gradient(rgba(10,10,20,.70), rgba(10,10,20,.90)),
     url("../assets/edit-4539.jpeg") center / cover no-repeat;
-  border-radius: 18px;
+  border-radius: var(--radius);
   padding: 28px;
 }
 .avatar{
