@@ -49,7 +49,7 @@ a:hover { opacity: .92; }
 }
 
 .hero{
-  min-height: 74vh;
+  min-height: calc(100vh - 58px);
   display: grid;
   place-items: center;
   padding: 34px 18px 56px;
