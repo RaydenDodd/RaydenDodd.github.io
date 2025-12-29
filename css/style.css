@@ -1,4 +1,4 @@
-:root{
+j:root{
   --bg: #0b0f17;
   --panel: rgba(255,255,255,.06);
   --panel2: rgba(255,255,255,.09);
@@ -14,7 +14,7 @@ html, body { margin: 0; padding: 0; }
 body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
   background:
-    radial-gradient(1500px 900px at 18% 10%, rgba(210,0,45,.42), transparent 58%),
+    radial-gradient(1500px 900px at 18% 10%, rgba(210,0,45,.30), transparent 58%),
     radial-gradient(1200px 700px at 82% 22%, rgba(140,0,30,.36), transparent 60%),
     radial-gradient(1000px 600px at 50% 85%, rgba(90,0,25,.30), transparent 62%),
     #0b0f17;
@@ -49,15 +49,17 @@ a:hover { opacity: .92; }
 }
 
 .hero{
-  min-height: calc(100vh - 58px);
-  display: grid;
-  place-items: center;
-  padding: 34px 18px 56px;
+  min-height: unset;
+  padding: 64px 18px 48px;
+  display: flex;
+  justify-content: flex-start;
 }
 .hero-card{
   width: 100%;
   max-width: 1200px;
-  min-height: 360px;
+  margin: 0 auto;
+
+  min-height: 280px;
 
   display: flex;
   flex-direction: column;
@@ -69,19 +71,21 @@ a:hover { opacity: .92; }
   box-shadow: var(--shadow);
 
   background:
-    linear-gradient(rgba(10,10,20,.35), rgba(10,10,20,.55)),
+    linear-gradient(rgba(10,10,20,.30), rgba(10,10,20,.55)),
     url("../assets/edit-4539.jpeg") center / cover no-repeat;
+  backdrop-filter: blur(6px);
 
   border-radius: 28px;
-  padding: 36px 28px;
+  padding: 40px 32px;
 }
 .avatar{
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   border-radius: 999px;
   object-fit: cover;
-  border: 2px solid rgba(255,255,255,.22);
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  border: 3px solid rgba(255,255,255,.25);
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  margin-bottom: 10px;
 }
 h1{ margin: 16px 0 6px; font-size: clamp(30px, 3vw, 44px); }
 .subtitle{ margin: 0 0 18px; color: var(--muted); }
