@@ -161,7 +161,7 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px); }
 .teaser h2{ margin:0 0 6px; font-size:30px; }
 .teaser p{ margin:0 0 14px; color:var(--muted); }
 
-.teaser-projects{ --panel-bg:url("../assets/projects-panel.jpg"); }
+.teaser-projects{ --panel-bg:url("../assets/1C15215B-51D5-48B0-B963-667BA2DA95B7.png"); }
 .teaser-games{ --panel-bg:url("../assets/games-panel.jpg"); }
 
 .page{
