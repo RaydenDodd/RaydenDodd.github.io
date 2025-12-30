@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Project</title>
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -26,11 +26,11 @@
   </a>
 
   <section class="teaser">
-    <div class="teaser-inner" style="--panel-bg:none;">
-      <h1 id="title" style="margin:0 0 6px;"></h1>
-      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+    <div class="teaser-inner">
+      <h1 id="title"></h1>
+      <p id="desc" class="muted"></p>
       <div id="tags" class="tag-row"></div>
-      <div id="links" class="card-actions" style="margin-top:14px;"></div>
+      <div id="links" class="card-actions"></div>
     </div>
   </section>
 
@@ -42,96 +42,79 @@
   <span>© <span id="year"></span> Rayden Dodd</span>
 </footer>
 
-<script src="./projects.js?v=3"></script>
+<script src="./projects.js"></script>
 <script>
-document.getElementById("year").textContent = new Date().getFullYear()
+document.getElementById("year").textContent = new Date().getFullYear();
 
-const qs = new URLSearchParams(location.search)
-const id = qs.get("id")
-const proj = (window.PROJECTS || []).find(p => p.id === id)
+const id = new URLSearchParams(location.search).get("id");
+const proj = (window.PROJECTS || []).find(p => p.id === id);
 
-const titleEl = document.getElementById("title")
-const descEl = document.getElementById("desc")
-const tagsEl = document.getElementById("tags")
-const linksEl = document.getElementById("links")
-const sectionsEl = document.getElementById("sections")
-
-const btn = (label, href) =>
-  `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`
-
-const pdfViewerSrc = (pdfUrl) => {
-  const viewer = "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.530/web/viewer.html"
-  return `${viewer}?file=${encodeURIComponent(pdfUrl)}`
-}
+const titleEl = document.getElementById("title");
+const descEl = document.getElementById("desc");
+const tagsEl = document.getElementById("tags");
+const linksEl = document.getElementById("links");
+const sectionsEl = document.getElementById("sections");
 
 if (!proj) {
-  titleEl.textContent = "Project not found"
-  descEl.textContent = "Missing or invalid project id in the URL."
-  sectionsEl.innerHTML = ""
-} else {
-  document.title = proj.title
-  titleEl.textContent = proj.title
-  descEl.textContent = proj.desc || ""
-
-  tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("")
-
-  const buttons = []
-  if (proj.repo) buttons.push(btn("Repo", proj.repo))
-  if (proj.live) buttons.push(btn("Live Site", proj.live))
-  linksEl.innerHTML = buttons.join("")
-
-  const blocks = []
-
-  ;(proj.sections || []).forEach(s => {
-    blocks.push(`
-      <section class="teaser">
-        <div class="teaser-inner" style="--panel-bg:none;">
-          <h2 style="margin:0 0 8px;">${s.heading}</h2>
-          <p class="muted">${s.body}</p>
-        </div>
-      </section>
-    `)
-  })
-
-  ;(proj.pdfs || []).forEach(p => {
-    const src = pdfViewerSrc(p.url || "")
-    blocks.push(`
-      <section class="teaser">
-        <div class="teaser-inner" style="--panel-bg:none;">
-          <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
-          <div class="player">
-            <iframe src="${src}" loading="lazy"></iframe>
-          </div>
-          <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-            <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">Open</a>
-          </div>
-        </div>
-      </section>
-    `)
-  })
-
-  ;(proj.youtube || []).forEach(v => {
-    blocks.push(`
-      <section class="teaser">
-        <div class="teaser-inner" style="--panel-bg:none;">
-          <h2 style="margin:0 0 12px;">${v.label || "Video"}</h2>
-          <div class="player">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/${v.id}"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy"></iframe>
-          </div>
-          <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-            <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-          </div>
-        </div>
-      </section>
-    `)
-  })
-
-  sectionsEl.innerHTML = blocks.join("")
+  titleEl.textContent = "Project not found";
+  return;
 }
+
+document.title = proj.title;
+titleEl.textContent = proj.title;
+descEl.textContent = proj.desc || "";
+
+tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+
+const btn = (l,h) => `<a class="btn small" href="${h}" target="_blank">${l}</a>`;
+linksEl.innerHTML = [
+  proj.repo ? btn("Repo", proj.repo) : "",
+  proj.live ? btn("Live Site", proj.live) : ""
+].join("");
+
+const blocks = [];
+
+(proj.sections || []).forEach(s => {
+  blocks.push(`
+    <section class="teaser">
+      <div class="teaser-inner">
+        <h2>${s.heading}</h2>
+        <p class="muted">${s.body}</p>
+      </div>
+    </section>
+  `);
+});
+
+(proj.pdfs || []).forEach(p => {
+  blocks.push(`
+    <section class="teaser">
+      <div class="teaser-inner">
+        <h2>${p.label}</h2>
+        <div style="height:80vh;">
+          <embed src="${p.url}" type="application/pdf" width="100%" height="100%">
+        </div>
+        <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+          <a class="btn small" href="${p.open}" target="_blank">Open</a>
+        </div>
+      </div>
+    </section>
+  `);
+});
+
+(proj.youtube || []).forEach(v => {
+  blocks.push(`
+    <section class="teaser">
+      <div class="teaser-inner">
+        <h2>${v.label}</h2>
+        <iframe width="100%" height="480"
+          src="https://www.youtube-nocookie.com/embed/${v.id}"
+          allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+  `);
+});
+
+sectionsEl.innerHTML = blocks.join("");
 </script>
 
 </body>
