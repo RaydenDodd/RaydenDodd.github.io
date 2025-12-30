@@ -21,19 +21,19 @@
 
 <main class="page">
 
-  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:16px;">
+  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:18px;">
     ← Back to Projects
   </a>
 
-  <!-- HERO PLATE -->
-  <section class="teaser-inner" style="--panel-bg:none;margin-bottom:24px;">
-    <h1 id="title" style="margin:0 0 6px;"></h1>
-    <p id="desc" class="muted" style="margin:0 0 14px;"></p>
-    <div id="tags" class="tag-row"></div>
-    <div id="links" class="card-actions" style="margin-top:14px;"></div>
+  <section class="teaser">
+    <div class="teaser-inner" style="--panel-bg:none;">
+      <h1 id="title" style="margin:0 0 6px;"></h1>
+      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+      <div id="tags" class="tag-row"></div>
+      <div id="links" class="card-actions" style="margin-top:14px;"></div>
+    </div>
   </section>
 
-  <!-- CONTENT -->
   <div id="sections"></div>
 
 </main>
@@ -61,7 +61,6 @@
     descEl.textContent = "This project does not exist.";
   } else {
     document.title = proj.title;
-
     titleEl.textContent = proj.title;
     descEl.textContent = proj.desc || "";
 
@@ -81,7 +80,7 @@
 
     (proj.sections || []).forEach(s => {
       blocks.push(`
-        <section class="teaser" style="padding:16px 0;border-top:0;">
+        <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
             <h2 style="margin:0 0 8px;">${s.heading}</h2>
             <p class="muted">${s.body}</p>
@@ -92,16 +91,16 @@
 
     (proj.pdfs || []).forEach(p => {
       blocks.push(`
-        <section class="teaser" style="padding:16px 0;border-top:0;">
+        <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-              <h2 style="margin:0;">${p.label || "PDF"}</h2>
+            <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
+            <div class="player">
+              <iframe src="${p.url}" loading="lazy"></iframe>
+            </div>
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
               <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">
                 Open PDF
               </a>
-            </div>
-            <div class="player">
-              <iframe src="${p.url}" loading="lazy"></iframe>
             </div>
           </div>
         </section>
@@ -110,24 +109,23 @@
 
     (proj.youtube || []).forEach(v => {
       blocks.push(`
-        <section class="teaser" style="padding:16px 0;border-top:0;">
+        <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-              <h2 style="margin:0;">${v.label || "Video"}</h2>
-              <a class="btn small"
-                 href="https://www.youtube.com/watch?v=${v.id}"
-                 target="_blank"
-                 rel="noopener noreferrer">
-                 Open on YouTube
-              </a>
-            </div>
+            <h2 style="margin:0 0 12px;">${v.label || "Video"}</h2>
             <div class="player">
               <iframe
                 src="https://www.youtube-nocookie.com/embed/${v.id}"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
-                loading="lazy">
-              </iframe>
+                loading="lazy"></iframe>
+            </div>
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small"
+                 href="https://www.youtube.com/watch?v=${v.id}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                Open on YouTube
+              </a>
             </div>
           </div>
         </section>
