@@ -1,125 +1,77 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Project • Rayden Dodd</title>
-  <link rel="stylesheet" href="../css/style.css" />
-</head>
-<body>
-  <header class="nav">
-    <div class="nav-left">
-      <a class="brand" href="../index.html">Rayden Dodd</a>
-    </div>
-    <nav class="nav-right">
-      <a class="active" href="./index.html">Projects</a>
-      <a href="../games.html">Games</a>
-      <a href="../index.html#contact">Contact</a>
-    </nav>
-  </header>
-
-  <main class="page">
-    <a class="muted" href="./index.html" style="display:inline-block;margin:0 0 14px;">← Back to Projects</a>
-
-    <section class="plate">
-      <h1 id="title" style="margin:0 0 8px;"></h1>
-      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
-      <div id="tags" class="tag-row" style="margin:0 0 14px;"></div>
-      <div id="links" class="card-actions"></div>
-    </section>
-
-    <section id="sections" class="section-stack"></section>
-  </main>
-
-  <footer class="footer">
-    <span>© <span id="year"></span> Rayden Dodd</span>
-  </footer>
-
-  <script src="./projects.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    const qs = new URLSearchParams(location.search);
-    const id = qs.get("id");
-    const proj = (window.PROJECTS || []).find(p => p.id === id) || null;
-
-    const titleEl = document.getElementById("title");
-    const descEl = document.getElementById("desc");
-    const tagsEl = document.getElementById("tags");
-    const linksEl = document.getElementById("links");
-    const sectionsEl = document.getElementById("sections");
-
-    const mkBtn = (label, href) =>
-      `<a class="btn small" href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
-
-    if (!proj) {
-      document.title = "Project not found • Rayden Dodd";
-      titleEl.textContent = "Project not found";
-      descEl.textContent = "This project id doesn’t exist.";
-      tagsEl.innerHTML = "";
-      linksEl.innerHTML = mkBtn("Back to Projects", "./index.html");
-      sectionsEl.innerHTML = "";
-    } else {
-      document.title = `${proj.title} • Rayden Dodd`;
-      titleEl.textContent = proj.title;
-      descEl.textContent = proj.desc || "";
-
-      tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
-
-      const btns = [];
-      if (proj.repo) btns.push(mkBtn("Repo", proj.repo));
-      if (proj.live) btns.push(mkBtn("Live Site", proj.live));
-      linksEl.innerHTML = btns.join("");
-
-      const blocks = [];
-
-      (proj.sections || []).forEach(s => {
-        blocks.push(`
-          <div class="plate">
-            <h2 style="margin:0 0 10px;font-size:22px;">${s.heading || ""}</h2>
-            <p class="muted" style="margin:0;line-height:1.5;">${s.body || ""}</p>
-          </div>
-        `);
-      });
-
-      if ((proj.pdfs || []).length) {
-        (proj.pdfs || []).forEach(p => {
-          blocks.push(`
-            <div class="plate">
-              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px;">
-                <h2 style="margin:0;font-size:22px;">${p.label || "PDF"}</h2>
-                <a class="btn small" href="${p.url}" target="_blank" rel="noreferrer">Open PDF</a>
-              </div>
-              <div class="embed pdf">
-                <iframe src="${p.url}" loading="lazy"></iframe>
-              </div>
-            </div>
-          `);
-        });
+window.PROJECTS = [
+  {
+    id: "wmata-forecasting",
+    title: "WMATA Ridership Forecasting",
+    desc: "Forecasting station ridership with classical + ML models. Feature engineering, evaluation, and plots.",
+    tags: ["Python", "Time Series", "Prophet", "LightGBM", "TFT"],
+    repo: "https://github.com/RaydenDodd/WMATA-Forecasting",
+    sections: [
+      {
+        heading: "Overview",
+        body: "Compared multiple forecasting approaches for WMATA Metrorail ridership using historical entries plus weather/calendar features. Built baselines, trained models, and evaluated accuracy and error behavior."
+      },
+      {
+        heading: "Deliverables",
+        body: "Proposal + final report embedded below. Code, plots, and experiment artifacts live in the repo."
       }
-
-      if ((proj.youtube || []).length) {
-        (proj.youtube || []).forEach(v => {
-          blocks.push(`
-            <div class="plate">
-              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px;">
-                <h2 style="margin:0;font-size:22px;">${v.label || "Video"}</h2>
-                <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noreferrer">Open on YouTube</a>
-              </div>
-              <div class="embed video">
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/${v.id}"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                  loading="lazy"></iframe>
-              </div>
-            </div>
-          `);
-        });
+    ],
+    pdfs: [
+      {
+        label: "Proposal Paper (PDF)",
+        url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf"
+      },
+      {
+        label: "Final Paper (PDF)",
+        url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf"
       }
+    ]
+  },
 
-      sectionsEl.innerHTML = blocks.join("");
-    }
-  </script>
-</body>
-</html>
+  {
+    id: "distracted-driver",
+    title: "Distracted Driver Detection",
+    desc: "Computer vision pipeline to classify driver behavior states from images/video.",
+    tags: ["Computer Vision", "Deep Learning", "Python"],
+    repo: "https://github.com/RaydenDodd/distracted-driver-detection",
+    live: "https://raydendodd.github.io/distracted-driver-detection/",
+    sections: [
+      {
+        heading: "Overview",
+        body: "End-to-end CV project for recognizing driver states. Includes dataset handling, training/eval, and a live site demo."
+      }
+    ]
+  },
+
+  {
+    id: "engine-detection",
+    title: "Engine Detection",
+    desc: "Model + demo for engine-related detection with a final presentation and YouTube video.",
+    tags: ["ML", "Detection", "Demo"],
+    repo: "https://github.com/dcgreen115/engine-detection",
+    sections: [
+      {
+        heading: "Overview",
+        body: "Final project with presentation + a demo video. Repo contains materials and setup details."
+      }
+    ],
+    youtube: [
+      {
+        label: "Demo Video",
+        id: "REPLACE_WITH_YOUTUBE_ID"
+      }
+    ]
+  },
+
+  {
+    id: "interactive-website",
+    title: "Interactive Website Project",
+    desc: "Standalone interactive website project (repo coming soon).",
+    tags: ["Web", "Interactive", "JavaScript"],
+    sections: [
+      {
+        heading: "Status",
+        body: "This is a standalone interactive site. Repo link will be added once it’s published."
+      }
+    ]
+  }
+];
