@@ -38,16 +38,25 @@
     const grid = document.getElementById("grid");
     const items = (window.PROJECTS || []).filter(p => p && p.id);
 
+    const cardHref = (p) => {
+      if (p.noDetailPage) return p.live || p.repo || "#";
+      return `./project.html?id=${encodeURIComponent(p.id)}`;
+    };
+
+    const cardTarget = (p) => (p.noDetailPage ? "_blank" : "_self");
+
     grid.innerHTML = items.map(p => {
       const tags = (p.tags || []).slice(0, 10).map(t => `<span class="tag">${t}</span>`).join("");
-      const href = `./project.html?id=${encodeURIComponent(p.id)}`;
+      const href = cardHref(p);
+      const target = cardTarget(p);
+
       return `
-        <a class="card" href="${href}">
+        <a class="card" href="${href}" target="${target}" rel="${target === "_blank" ? "noopener noreferrer" : ""}">
           <h3>${p.title}</h3>
           <p>${p.desc || ""}</p>
           <div class="tag-row">${tags}</div>
           <div class="card-actions">
-            <span class="btn small">Open</span>
+            <span class="btn small">${p.noDetailPage ? "Open Site" : "Open"}</span>
           </div>
         </a>
       `;
