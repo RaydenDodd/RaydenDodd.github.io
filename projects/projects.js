@@ -1,31 +1,28 @@
 window.PROJECTS = [
 
 {
-  id: "wmata-forecasting",
-  title: "WMATA Ridership Forecasting",
-  desc: "Forecasting station ridership using classical and machine learning time-series models.",
-  tags: ["Python", "Time Series", "Prophet", "LightGBM", "TFT"],
-  repo: "https://github.com/RaydenDodd/WMATA-Forecasting",
+  {
+  id: "wmata-visualization",
+  title: "WMATA Ridership Dashboard",
+  desc: "Interactive Dash and Plotly dashboard for WMATA ridership analysis.",
+  tags: ["Python", "Dash", "Plotly", "Data Visualization", "Docker"],
+  repo: "https://github.com/RaydenDodd/WMATA-Visualization",
+  live: "https://dashapp-278644791327.us-east1.run.app",
   sections: [
     {
       heading: "Overview",
-      body: "Compared multiple forecasting approaches for WMATA Metrorail ridership using historical data with calendar and weather features."
+      body: "Interactive visualization of WMATA ridership data from 2012–2025, including cleaning, outlier detection, transformations, and statistical summaries."
     },
     {
       heading: "Deliverables",
-      body: "Proposal and final paper embedded below."
+      body: "Final report embedded below."
     }
   ],
   pdfs: [
     {
-      label: "Proposal Paper",
-      url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf",
-      open: "https://github.com/RaydenDodd/WMATA-Forecasting/blob/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf"
-    },
-    {
-      label: "Final Paper",
-      url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf",
-      open: "https://github.com/RaydenDodd/WMATA-Forecasting/blob/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf"
+      label: "Final Report",
+      url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Visualization/main/Project_Report_Rayden_Dodd.pdf",
+      open: "https://github.com/RaydenDodd/WMATA-Visualization/blob/main/Project_Report_Rayden_Dodd.pdf"
     }
   ]
 },
