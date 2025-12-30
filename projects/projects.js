@@ -18,12 +18,12 @@ window.PROJECTS = [
     pdfs: [
       {
         label: "Proposal Paper",
-        url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/WMATA-Forecasting@main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf",
         open: "https://github.com/RaydenDodd/WMATA-Forecasting/blob/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership.pdf"
       },
       {
         label: "Final Paper",
-        url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Forecasting/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/WMATA-Forecasting@main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf",
         open: "https://github.com/RaydenDodd/WMATA-Forecasting/blob/main/Comparing_Of_Forecasting_Approaches_for_WMATA_Metro_Ridership_Final_Paper-RaydenDodd.pdf"
       }
     ]
@@ -32,24 +32,24 @@ window.PROJECTS = [
   {
     id: "wmata-visualization",
     title: "WMATA Ridership Dashboard",
-    desc: "Interactive Dash and Plotly dashboard for WMATA ridership analysis, deployed as a containerized web application.",
+    desc: "Interactive Dash and Plotly dashboard for WMATA ridership analysis deployed as a containerized web application.",
     tags: ["Python", "Dash", "Plotly", "Data Visualization", "Docker", "Cloud"],
     repo: "https://github.com/RaydenDodd/WMATA-Visualization",
     live: "https://dashapp-278644791327.us-east1.run.app",
     sections: [
       {
         heading: "Overview",
-        body: "Interactive visualization of WMATA ridership data from 2012–2025, including cleaning, outlier detection, dimensionality reduction, transformations, and statistical summaries."
+        body: "Interactive visualization of WMATA ridership data from 2012–2025 with cleaning, transformations, dimensionality reduction, and statistical analysis."
       },
       {
         heading: "Deliverables",
-        body: "Final report embedded below. Presentation slides will be added."
+        body: "Final report embedded below."
       }
     ],
     pdfs: [
       {
         label: "Final Report",
-        url: "https://raw.githubusercontent.com/RaydenDodd/WMATA-Visualization/main/Project_Report_Rayden_Dodd.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/WMATA-Visualization@main/Project_Report_Rayden_Dodd.pdf",
         open: "https://github.com/RaydenDodd/WMATA-Visualization/blob/main/Project_Report_Rayden_Dodd.pdf"
       }
     ]
@@ -84,22 +84,22 @@ window.PROJECTS = [
     pdfs: [
       {
         label: "IEEE Journal Article",
-        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/IEEE%20Journal%20Article%20Engine%20Detection.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/engine-detection@main/deliverables/IEEE%20Journal%20Article%20Engine%20Detection.pdf",
         open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/IEEE%20Journal%20Article%20Engine%20Detection.pdf"
       },
       {
         label: "Final Project Binder",
-        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/Final%20Project%20Binder.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/engine-detection@main/deliverables/Final%20Project%20Binder.pdf",
         open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/Final%20Project%20Binder.pdf"
       },
       {
         label: "Expo Presentation",
-        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/Expo%20presentation.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/engine-detection@main/deliverables/Expo%20presentation.pdf",
         open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/Expo%20presentation.pdf"
       },
       {
         label: "Expo Poster",
-        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/Expo%20Poster.pdf",
+        url: "https://cdn.jsdelivr.net/gh/RaydenDodd/engine-detection@main/deliverables/Expo%20Poster.pdf",
         open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/Expo%20Poster.pdf"
       }
     ],
