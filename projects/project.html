@@ -1,29 +1,27 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Project</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
 
 <header class="nav">
   <div class="nav-left">
-    <a class="brand" href="/index.html">Rayden Dodd</a>
+    <a class="brand" href="../index.html">Rayden Dodd</a>
   </div>
   <nav class="nav-right">
-    <a class="active" href="/projects/index.html">Projects</a>
-    <a href="/games.html">Games</a>
-    <a href="/index.html#contact">Contact</a>
+    <a class="active" href="./index.html">Projects</a>
+    <a href="../games.html">Games</a>
+    <a href="../index.html#contact">Contact</a>
   </nav>
 </header>
 
 <main class="page">
 
-  <div id="banner" style="display:none;margin-bottom:18px;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);"></div>
-
-  <a class="muted" href="/projects/index.html" style="display:inline-block;margin-bottom:18px;">
+  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:18px;">
     ← Back to Projects
   </a>
 
@@ -44,40 +42,21 @@
   <span>© <span id="year"></span> Rayden Dodd</span>
 </footer>
 
+<script src="./projects.js"></script>
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  const banner = document.getElementById("banner");
-  const showBanner = (msg) => {
-    banner.style.display = "block";
-    banner.textContent = msg;
-  };
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get("id");
+  const proj = (window.PROJECTS || []).find(p => p.id === id);
 
-  window.addEventListener("error", (e) => {
-    showBanner("JS error: " + (e && e.message ? e.message : "unknown"));
-  });
-
-  window.addEventListener("unhandledrejection", (e) => {
-    showBanner("Promise error: " + (e && e.reason ? e.reason : "unknown"));
-  });
-</script>
-
-<script defer src="/projects/projects.js"></script>
-
-<script defer>
   const titleEl = document.getElementById("title");
   const descEl = document.getElementById("desc");
   const tagsEl = document.getElementById("tags");
   const linksEl = document.getElementById("links");
   const sectionsEl = document.getElementById("sections");
-  const banner = document.getElementById("banner");
 
-  const showBanner = (msg) => {
-    banner.style.display = "block";
-    banner.textContent = msg;
-  };
-
-  const escapeHtml = (s) => String(s ?? "")
+  const esc = (s) => String(s ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -85,99 +64,88 @@
     .replaceAll("'", "&#39;");
 
   const btn = (label, href) =>
-    `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    `<a class="btn small" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
 
-  const ensurePdfUrl = (url) => {
-    const u = String(url || "");
-    if (!u) return "";
-    if (u.includes("#toolbar=") || u.includes("#view=")) return u;
-    return u + "#toolbar=1&navpanes=0&scrollbar=1";
-  };
-
-  const id = new URLSearchParams(location.search).get("id");
+  const viewerSrc = (pdfUrl) =>
+    `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(pdfUrl)}`;
 
   if (!id) {
-    titleEl.textContent = "Missing project id";
-    descEl.textContent = "Open Projects and click a project card again.";
-    showBanner("URL missing ?id=. Example: /projects/project.html?id=wmata-forecasting");
-  } else if (!window.PROJECTS || !Array.isArray(window.PROJECTS)) {
-    titleEl.textContent = "projects.js did not load";
-    descEl.textContent = "Check /projects/projects.js exists and is publicly accessible.";
-    showBanner("Try opening /projects/projects.js directly in your browser. If that 404s, path is wrong or file missing.");
+    titleEl.textContent = "Project not found";
+    descEl.textContent = "Missing project id in the URL.";
+    sectionsEl.innerHTML = "";
+  } else if (!proj) {
+    titleEl.textContent = "Project not found";
+    descEl.textContent = `No project matches id: ${id}`;
+    sectionsEl.innerHTML = "";
   } else {
-    const proj = window.PROJECTS.find(p => p.id === id);
+    document.title = proj.title || "Project";
+    titleEl.textContent = proj.title || "Project";
+    descEl.textContent = proj.desc || "";
 
-    if (!proj) {
-      titleEl.textContent = "Project not found";
-      descEl.textContent = "That id does not exist in projects.js.";
-      showBanner("id=" + id + " not found in window.PROJECTS");
-    } else {
-      document.title = proj.title || "Project";
-      titleEl.textContent = proj.title || "";
-      descEl.textContent = proj.desc || "";
+    tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join("");
 
-      tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+    const buttons = [];
+    if (proj.repo) buttons.push(btn("Repo", proj.repo));
+    if (proj.live) buttons.push(btn("Live Site", proj.live));
+    linksEl.innerHTML = buttons.join("");
 
-      const buttons = [];
-      if (proj.repo) buttons.push(btn("Repo", proj.repo));
-      if (proj.live) buttons.push(btn("Live Site", proj.live));
-      linksEl.innerHTML = buttons.join("");
+    const blocks = [];
 
-      const blocks = [];
+    (proj.sections || []).forEach(s => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>${esc(s.heading)}</h2>
+            <p class="muted">${esc(s.body)}</p>
+          </div>
+        </section>
+      `);
+    });
 
-      (proj.sections || []).forEach(s => {
-        blocks.push(`
-          <section class="teaser">
-            <div class="teaser-inner" style="--panel-bg:none;">
-              <h2>${escapeHtml(s.heading)}</h2>
-              <p class="muted">${escapeHtml(s.body)}</p>
+    (proj.pdfs || []).forEach(p => {
+      const raw = p.url;
+      const openUrl = p.open || p.url;
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>${esc(p.label)}</h2>
+            <div class="player">
+              <iframe
+                src="${viewerSrc(raw)}"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+                style="width:100%;height:620px;border:0;border-radius:12px;"></iframe>
             </div>
-          </section>
-        `);
-      });
-
-      (proj.pdfs || []).forEach(p => {
-        const pdfUrl = ensurePdfUrl(p.url);
-        const openUrl = p.open || p.url;
-        blocks.push(`
-          <section class="teaser">
-            <div class="teaser-inner" style="--panel-bg:none;">
-              <h2>${escapeHtml(p.label)}</h2>
-              <div style="height:80vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
-                <embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">
-              </div>
-              <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-                <a class="btn small" href="${openUrl}" target="_blank" rel="noopener noreferrer">Open</a>
-              </div>
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small" href="${esc(openUrl)}" target="_blank" rel="noopener noreferrer">Open</a>
             </div>
-          </section>
-        `);
-      });
+          </div>
+        </section>
+      `);
+    });
 
-      (proj.youtube || []).forEach(v => {
-        blocks.push(`
-          <section class="teaser">
-            <div class="teaser-inner" style="--panel-bg:none;">
-              <h2>${escapeHtml(v.label)}</h2>
-              <div style="height:70vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.id)}"
-                  width="100%"
-                  height="100%"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                  loading="lazy"></iframe>
-              </div>
-              <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-                <a class="btn small" href="https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-              </div>
+    (proj.youtube || []).forEach(v => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>${esc(v.label)}</h2>
+            <div class="player">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${esc(v.id)}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+                style="width:100%;height:620px;border:0;border-radius:12px;"></iframe>
             </div>
-          </section>
-        `);
-      });
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+            </div>
+          </div>
+        </section>
+      `);
+    });
 
-      sectionsEl.innerHTML = blocks.join("");
-    }
+    sectionsEl.innerHTML = blocks.join("");
   }
 </script>
 
