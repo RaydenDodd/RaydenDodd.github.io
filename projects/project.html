@@ -59,6 +59,9 @@
   const btn = (label, href) =>
     `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
 
+  const pdfViewerSrc = (rawUrl) =>
+    `https://cdn.jsdelivr.net/gh/mozilla/pdfjs-dist@master/web/viewer.html?file=${encodeURIComponent(rawUrl)}`;
+
   if (!proj) {
     titleEl.textContent = "Project not found";
     descEl.textContent = "This project does not exist.";
@@ -82,7 +85,7 @@
       blocks.push(`
         <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${s.heading}</h2>
+            <h2 style="margin:0 0 8px;">${s.heading}</h2>
             <p class="muted">${s.body}</p>
           </div>
         </section>
@@ -93,12 +96,10 @@
       blocks.push(`
         <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${p.label}</h2>
-            <iframe
-              src="${p.url}"
-              style="width:100%;height:70vh;border:0;border-radius:14px;"
-              loading="lazy">
-            </iframe>
+            <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
+            <div class="player">
+              <iframe src="${pdfViewerSrc(p.url)}" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            </div>
             <div style="margin-top:12px;display:flex;justify-content:flex-end;">
               <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">
                 Open
@@ -113,16 +114,19 @@
       blocks.push(`
         <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${v.label}</h2>
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/${v.id}"
-              style="width:100%;height:70vh;border:0;border-radius:14px;"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
+            <h2 style="margin:0 0 12px;">${v.label || "Video"}</h2>
+            <div class="player">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${v.id}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+            </div>
             <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-              <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">
+              <a class="btn small"
+                 href="https://www.youtube.com/watch?v=${v.id}"
+                 target="_blank"
+                 rel="noopener noreferrer">
                 Open on YouTube
               </a>
             </div>
