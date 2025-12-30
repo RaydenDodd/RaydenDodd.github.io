@@ -13,7 +13,7 @@
 html,body{ margin:0; padding:0 }
 
 body{
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji";
   background:
     radial-gradient(1200px 700px at 85% 10%, rgba(200,0,55,.40), transparent 60%),
     radial-gradient(900px 600px at 20% 20%, rgba(255,120,40,.28), transparent 62%),
@@ -40,6 +40,21 @@ a:hover{ opacity:.92 }
   border-bottom:1px solid var(--line);
   backdrop-filter:blur(10px);
   background:rgba(10,14,22,.55);
+}
+
+.brand{ font-weight:700; letter-spacing:.2px }
+
+.nav-right a{
+  margin-left:14px;
+  padding:8px 10px;
+  border-radius:12px;
+  color:var(--muted);
+}
+
+.nav-right a.active,
+.nav-right a:hover{
+  color:var(--text);
+  background:rgba(255,255,255,.07);
 }
 
 .hero{
@@ -93,7 +108,7 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px) }
   padding:10px 14px;
   border-radius:999px;
   border:1px solid var(--line);
-  font-weight:600;
+  font-weight:700;
   position:relative;
   overflow:hidden;
   backdrop-filter:blur(18px) saturate(180%);
@@ -106,8 +121,8 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px) }
   position:absolute;
   inset:0;
   background:var(--tint);
-  opacity:.55;
-  mix-blend-mode:overlay;
+  opacity:.62;
+  mix-blend-mode:color;
   pointer-events:none;
 }
 
@@ -123,34 +138,22 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px) }
 }
 
 .bubble.ig{
-  --tint:linear-gradient(135deg,
-    rgba(255,0,120,.75),
-    rgba(255,140,60,.35)
-  );
+  --tint:linear-gradient(135deg, rgba(255,0,140,.85), rgba(255,160,70,.35));
 }
 
 .bubble.yt{
-  --tint:linear-gradient(135deg,
-    rgba(255,40,40,.75),
-    rgba(255,120,80,.28)
-  );
+  --tint:linear-gradient(135deg, rgba(255,45,45,.85), rgba(255,120,80,.25));
 }
 
 .bubble.li{
-  --tint:linear-gradient(135deg,
-    rgba(10,102,194,.80),
-    rgba(80,170,255,.35)
-  );
+  --tint:linear-gradient(135deg, rgba(10,102,194,.90), rgba(80,170,255,.30));
 }
 
 .bubble.gh{
-  --tint:linear-gradient(135deg,
-    rgba(180,180,180,.55),
-    rgba(90,90,110,.22)
-  );
+  --tint:linear-gradient(135deg, rgba(200,200,210,.55), rgba(90,90,110,.22));
 }
 
-.bubble:hover::before{ opacity:.68 }
+.bubble:hover::before{ opacity:.72 }
 .bubble:hover{ opacity:1 }
 
 .btn{
@@ -159,7 +162,19 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px) }
   border-radius:14px;
   border:1px solid rgba(255,255,255,.18);
   background:rgba(255,255,255,.12);
-  font-weight:700;
+  font-weight:800;
+}
+
+.btn:hover{ background:rgba(255,255,255,.16) }
+
+.btn.ghost{
+  background:transparent;
+}
+
+.btn.small{
+  padding:9px 12px;
+  border-radius:12px;
+  font-weight:800;
 }
 
 .cta-row{
@@ -192,6 +207,89 @@ h1{ margin:16px 0 6px; font-size:clamp(30px,3vw,44px) }
 
 .teaser-projects{ --panel-bg:url("../assets/1C15215B-51D5-48B0-B963-667BA2DA95B7.png") }
 .teaser-games{ --panel-bg:url("../assets/6A11BCEA-1445-43A3-BDBE-96F516B686C5.png") }
+
+.page{
+  width:min(1100px,100%);
+  margin:0 auto;
+  padding:28px 18px 64px;
+}
+
+.muted{ color:var(--muted) }
+
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:rgba(255,255,255,.05);
+  box-shadow:var(--shadow);
+  padding:16px;
+  backdrop-filter:blur(10px);
+}
+
+.card h3{ margin:0 0 8px }
+.card p{ margin:0 0 12px; color:var(--muted) }
+
+.tag-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:10px 0 12px;
+}
+
+.tag{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.06);
+}
+
+.card-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.section-stack{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:14px;
+}
+
+.plate{
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:rgba(10,14,22,.55);
+  box-shadow:0 20px 70px rgba(0,0,0,.45);
+  backdrop-filter:blur(10px);
+  padding:22px;
+}
+
+.embed{
+  border:1px solid var(--line);
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(0,0,0,.30);
+  box-shadow:var(--shadow);
+}
+
+.embed iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+
+.embed.pdf{ height:min(78vh,900px) }
+.embed.video{ height:min(70vh,720px) }
 
 .footer{
   padding:18px;
