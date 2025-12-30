@@ -50,7 +50,7 @@ const qs = new URLSearchParams(location.search)
 const id = qs.get("id")
 const proj = (window.PROJECTS || []).find(p => p.id === id)
 
-const viewer = "https://unpkg.com/pdfjs-dist@5.4.530/web/viewer.html"
+const viewer = "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.530/web/viewer.html"
 
 const titleEl = document.getElementById("title")
 const descEl = document.getElementById("desc")
@@ -91,12 +91,14 @@ if (!proj) {
   })
 
   ;(proj.pdfs || []).forEach(p => {
+    const pdfUrl = p.url || ""
+    const src = `${viewer}?file=${encodeURIComponent(pdfUrl)}`
     blocks.push(`
       <section class="teaser">
         <div class="teaser-inner" style="--panel-bg:none;">
           <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
           <div class="player">
-            <iframe src="${viewer}?file=${encodeURIComponent(p.url)}" loading="lazy"></iframe>
+            <iframe src="${src}" loading="lazy" referrerpolicy="no-referrer"></iframe>
           </div>
           <div style="margin-top:12px;display:flex;justify-content:flex-end;">
             <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">Open</a>
