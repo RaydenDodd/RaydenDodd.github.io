@@ -3,123 +3,140 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Project • Rayden Dodd</title>
+  <title>Project</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <header class="nav">
-    <div class="nav-left">
-      <a class="brand" href="../index.html">Rayden Dodd</a>
-    </div>
-    <nav class="nav-right">
-      <a class="active" href="./index.html">Projects</a>
-      <a href="../games.html">Games</a>
-      <a href="../index.html#contact">Contact</a>
-    </nav>
-  </header>
 
-  <main class="page">
-    <a class="muted" href="./index.html" style="display:inline-block;margin:0 0 14px;">← Back to Projects</a>
+<header class="nav">
+  <div class="nav-left">
+    <a class="brand" href="../index.html">Rayden Dodd</a>
+  </div>
+  <nav class="nav-right">
+    <a class="active" href="./index.html">Projects</a>
+    <a href="../games.html">Games</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
 
-    <section class="plate">
-      <h1 id="title" style="margin:0 0 8px;"></h1>
-      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
-      <div id="tags" class="tag-row" style="margin:0 0 14px;"></div>
-      <div id="links" class="card-actions"></div>
-    </section>
+<main class="page">
 
-    <section id="sections" class="section-stack"></section>
-  </main>
+  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:16px;">
+    ← Back to Projects
+  </a>
 
-  <footer class="footer">
-    <span>© <span id="year"></span> Rayden Dodd</span>
-  </footer>
+  <!-- HERO PLATE -->
+  <section class="teaser-inner" style="--panel-bg:none;margin-bottom:24px;">
+    <h1 id="title" style="margin:0 0 6px;"></h1>
+    <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+    <div id="tags" class="tag-row"></div>
+    <div id="links" class="card-actions" style="margin-top:14px;"></div>
+  </section>
 
-  <script src="./projects.js"></script>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <!-- CONTENT -->
+  <div id="sections"></div>
 
-    const qs = new URLSearchParams(location.search);
-    const id = qs.get("id");
-    const proj = (window.PROJECTS || []).find(p => p.id === id) || null;
+</main>
 
-    const titleEl = document.getElementById("title");
-    const descEl = document.getElementById("desc");
-    const tagsEl = document.getElementById("tags");
-    const linksEl = document.getElementById("links");
-    const sectionsEl = document.getElementById("sections");
+<footer class="footer">
+  <span>© <span id="year"></span> Rayden Dodd</span>
+</footer>
 
-    const mkBtn = (label, href) =>
-      `<a class="btn small" href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
+<script src="./projects.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    if (!proj) {
-      document.title = "Project not found • Rayden Dodd";
-      titleEl.textContent = "Project not found";
-      descEl.textContent = "This project id doesn’t exist.";
-      tagsEl.innerHTML = "";
-      linksEl.innerHTML = mkBtn("Back to Projects", "./index.html");
-      sectionsEl.innerHTML = "";
-    } else {
-      document.title = `${proj.title} • Rayden Dodd`;
-      titleEl.textContent = proj.title;
-      descEl.textContent = proj.desc || "";
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get("id");
+  const proj = (window.PROJECTS || []).find(p => p.id === id);
 
-      tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+  const titleEl = document.getElementById("title");
+  const descEl = document.getElementById("desc");
+  const tagsEl = document.getElementById("tags");
+  const linksEl = document.getElementById("links");
+  const sectionsEl = document.getElementById("sections");
 
-      const btns = [];
-      if (proj.repo) btns.push(mkBtn("Repo", proj.repo));
-      if (proj.live) btns.push(mkBtn("Live Site", proj.live));
-      linksEl.innerHTML = btns.join("");
+  if (!proj) {
+    titleEl.textContent = "Project not found";
+    descEl.textContent = "This project does not exist.";
+  } else {
+    document.title = proj.title;
 
-      const blocks = [];
+    titleEl.textContent = proj.title;
+    descEl.textContent = proj.desc || "";
 
-      (proj.sections || []).forEach(s => {
-        blocks.push(`
-          <div class="plate">
-            <h2 style="margin:0 0 10px;font-size:22px;">${s.heading || ""}</h2>
-            <p class="muted" style="margin:0;line-height:1.5;">${s.body || ""}</p>
+    tagsEl.innerHTML = (proj.tags || [])
+      .map(t => `<span class="tag">${t}</span>`)
+      .join("");
+
+    const btn = (label, href) =>
+      `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+
+    const buttons = [];
+    if (proj.repo) buttons.push(btn("Repo", proj.repo));
+    if (proj.live) buttons.push(btn("Live Site", proj.live));
+    linksEl.innerHTML = buttons.join("");
+
+    const blocks = [];
+
+    (proj.sections || []).forEach(s => {
+      blocks.push(`
+        <section class="teaser" style="padding:16px 0;border-top:0;">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2 style="margin:0 0 8px;">${s.heading}</h2>
+            <p class="muted">${s.body}</p>
           </div>
-        `);
-      });
+        </section>
+      `);
+    });
 
-      if ((proj.pdfs || []).length) {
-        (proj.pdfs || []).forEach(p => {
-          blocks.push(`
-            <div class="plate">
-              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px;">
-                <h2 style="margin:0;font-size:22px;">${p.label || "PDF"}</h2>
-                <a class="btn small" href="${p.url}" target="_blank" rel="noreferrer">Open PDF</a>
-              </div>
-              <div class="embed pdf">
-                <iframe src="${p.url}" loading="lazy"></iframe>
-              </div>
+    (proj.pdfs || []).forEach(p => {
+      blocks.push(`
+        <section class="teaser" style="padding:16px 0;border-top:0;">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+              <h2 style="margin:0;">${p.label || "PDF"}</h2>
+              <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">
+                Open PDF
+              </a>
             </div>
-          `);
-        });
-      }
-
-      if ((proj.youtube || []).length) {
-        (proj.youtube || []).forEach(v => {
-          blocks.push(`
-            <div class="plate">
-              <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px;">
-                <h2 style="margin:0;font-size:22px;">${v.label || "Video"}</h2>
-                <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noreferrer">Open on YouTube</a>
-              </div>
-              <div class="embed video">
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/${v.id}"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                  loading="lazy"></iframe>
-              </div>
+            <div class="player">
+              <iframe src="${p.url}" loading="lazy"></iframe>
             </div>
-          `);
-        });
-      }
+          </div>
+        </section>
+      `);
+    });
 
-      sectionsEl.innerHTML = blocks.join("");
-    }
-  </script>
+    (proj.youtube || []).forEach(v => {
+      blocks.push(`
+        <section class="teaser" style="padding:16px 0;border-top:0;">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+              <h2 style="margin:0;">${v.label || "Video"}</h2>
+              <a class="btn small"
+                 href="https://www.youtube.com/watch?v=${v.id}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                 Open on YouTube
+              </a>
+            </div>
+            <div class="player">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${v.id}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            </div>
+          </div>
+        </section>
+      `);
+    });
+
+    sectionsEl.innerHTML = blocks.join("");
+  }
+</script>
+
 </body>
 </html>
