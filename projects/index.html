@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="nav">
+    <div class="brand"><a href="../">Rayden Dodd</a></div>
+    <div class="nav-right">
+      <a class="active" href="./">Projects</a>
+      <a href="../games/">Games</a>
+      <a href="../#contact">Contact</a>
+    </div>
+  </div>
+
+  <main class="page">
+    <h1 style="margin:6px 0 10px;">Projects</h1>
+    <p class="muted" style="margin:0 0 18px;">Featured work, writeups, and demos.</p>
+    <div id="grid" class="card-grid"></div>
+  </main>
+
+  <script src="./projects.js"></script>
+  <script>
+    const grid = document.getElementById("grid");
+    const items = (window.PROJECTS || []).filter(p => p.id);
+
+    grid.innerHTML = items.map(p => {
+      const tags = (p.tags || []).slice(0, 6).map(t => `<span class="tag">${t}</span>`).join("");
+      const href = `./project.html?id=${encodeURIComponent(p.id)}`;
+      return `
+        <a class="card" href="${href}">
+          <h3>${p.title}</h3>
+          <p>${p.desc || ""}</p>
+          <div class="tag-row">${tags}</div>
+          <div class="card-actions">
+            <span class="btn small">Open</span>
+          </div>
+        </a>
+      `;
+    }).join("");
+  </script>
+</body>
+</html>
