@@ -12,15 +12,17 @@
       <a class="brand" href="../index.html">Rayden Dodd</a>
     </div>
     <nav class="nav-right">
-      <a class="active" href="./">Projects</a>
+      <a class="active" href="./index.html">Projects</a>
       <a href="../games.html">Games</a>
       <a href="../index.html#contact">Contact</a>
     </nav>
   </header>
 
   <main class="page">
-    <h1 style="margin:6px 0 10px;">Projects</h1>
-    <p class="muted" style="margin:0 0 18px;">Featured work, writeups, and demos.</p>
+    <div class="plate">
+      <h1 style="margin:0 0 6px;">Projects</h1>
+      <p class="muted" style="margin:0;">Featured work, writeups, and demos.</p>
+    </div>
 
     <div id="grid" class="card-grid"></div>
   </main>
@@ -31,14 +33,13 @@
 
   <script src="./projects.js"></script>
   <script>
-    const y = document.getElementById("year");
-    if (y) y.textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 
     const grid = document.getElementById("grid");
     const items = (window.PROJECTS || []).filter(p => p && p.id);
 
     grid.innerHTML = items.map(p => {
-      const tags = (p.tags || []).slice(0, 8).map(t => `<span class="tag">${t}</span>`).join("");
+      const tags = (p.tags || []).slice(0, 10).map(t => `<span class="tag">${t}</span>`).join("");
       const href = `./project.html?id=${encodeURIComponent(p.id)}`;
       return `
         <a class="card" href="${href}">
