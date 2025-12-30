@@ -27,10 +27,10 @@
 
   <section class="teaser">
     <div class="teaser-inner" style="--panel-bg:none;">
-      <h1 id="title"></h1>
-      <p id="desc" class="muted"></p>
+      <h1 id="title" style="margin:0 0 6px;"></h1>
+      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
       <div id="tags" class="tag-row"></div>
-      <div id="links" class="card-actions"></div>
+      <div id="links" class="card-actions" style="margin-top:14px;"></div>
     </div>
   </section>
 
@@ -46,7 +46,8 @@
 <script>
 document.getElementById("year").textContent = new Date().getFullYear()
 
-const id = new URLSearchParams(location.search).get("id")
+const qs = new URLSearchParams(location.search)
+const id = qs.get("id")
 const proj = (window.PROJECTS || []).find(p => p.id === id)
 
 const viewer = "https://cdn.jsdelivr.net/gh/mozilla/pdf.js@v5.4.530/web/viewer.html"
@@ -62,71 +63,71 @@ const btn = (label, href) =>
 
 if (!proj) {
   titleEl.textContent = "Project not found"
-  return
+  descEl.textContent = "Missing or invalid project id in the URL."
+  sectionsEl.innerHTML = ""
+} else {
+  document.title = proj.title
+  titleEl.textContent = proj.title
+  descEl.textContent = proj.desc || ""
+
+  tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("")
+
+  linksEl.innerHTML = [
+    proj.repo ? btn("Repo", proj.repo) : "",
+    proj.live ? btn("Live Site", proj.live) : ""
+  ].filter(Boolean).join("")
+
+  const blocks = []
+
+  ;(proj.sections || []).forEach(s => {
+    blocks.push(`
+      <section class="teaser">
+        <div class="teaser-inner" style="--panel-bg:none;">
+          <h2 style="margin:0 0 8px;">${s.heading}</h2>
+          <p class="muted">${s.body}</p>
+        </div>
+      </section>
+    `)
+  })
+
+  ;(proj.pdfs || []).forEach(p => {
+    blocks.push(`
+      <section class="teaser">
+        <div class="teaser-inner" style="--panel-bg:none;">
+          <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
+          <div class="player">
+            <iframe src="${viewer}?file=${encodeURIComponent(p.url)}" loading="lazy"></iframe>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+            <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">Open</a>
+          </div>
+        </div>
+      </section>
+    `)
+  })
+
+  ;(proj.youtube || []).forEach(v => {
+    blocks.push(`
+      <section class="teaser">
+        <div class="teaser-inner" style="--panel-bg:none;">
+          <h2 style="margin:0 0 12px;">${v.label || "Video"}</h2>
+          <div class="player">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/${v.id}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+          <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+            <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+          </div>
+        </div>
+      </section>
+    `)
+  })
+
+  sectionsEl.innerHTML = blocks.join("")
 }
-
-document.title = proj.title
-titleEl.textContent = proj.title
-descEl.textContent = proj.desc || ""
-
-tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("")
-
-linksEl.innerHTML = [
-  proj.repo && btn("Repo", proj.repo),
-  proj.live && btn("Live Site", proj.live)
-].filter(Boolean).join("")
-
-const blocks = []
-
-;(proj.sections || []).forEach(s => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${s.heading}</h2>
-        <p class="muted">${s.body}</p>
-      </div>
-    </section>
-  `)
-})
-
-;(proj.pdfs || []).forEach(p => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${p.label}</h2>
-        <div class="player">
-          <iframe
-            src="${viewer}?file=${encodeURIComponent(p.url)}"
-            loading="lazy"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <div style="display:flex;justify-content:flex-end;margin-top:12px;">
-          <a class="btn small" href="${p.open || p.url}" target="_blank">Open</a>
-        </div>
-      </div>
-    </section>
-  `)
-})
-
-;(proj.youtube || []).forEach(v => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${v.label}</h2>
-        <div class="player">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/${v.id}"
-            allowfullscreen
-            loading="lazy">
-          </iframe>
-        </div>
-      </div>
-    </section>
-  `)
-})
-
-sectionsEl.innerHTML = blocks.join("")
 </script>
 
 </body>
