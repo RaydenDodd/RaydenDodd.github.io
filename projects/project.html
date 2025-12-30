@@ -4,17 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Project</title>
-  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <div class="nav">
-    <div class="brand"><a href="../">Rayden Dodd</a></div>
-    <div class="nav-right">
-      <a class="active" href="./">Projects</a>
-      <a href="../games/">Games</a>
-      <a href="../#contact">Contact</a>
+  <header class="nav">
+    <div class="nav-left">
+      <a class="brand" href="../index.html">Rayden Dodd</a>
     </div>
-  </div>
+    <nav class="nav-right">
+      <a class="active" href="./">Projects</a>
+      <a href="../games.html">Games</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
 
   <main class="page" style="padding-top:18px;">
     <a class="muted" href="./" style="display:inline-block;margin-bottom:14px;">← Back to Projects</a>
@@ -33,8 +35,15 @@
     <section id="sections" style="width:min(1200px,100%);margin:0 auto;"></section>
   </main>
 
+  <footer class="footer">
+    <span>© <span id="year"></span> Rayden Dodd</span>
+  </footer>
+
   <script src="./projects.js"></script>
   <script>
+    const y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
     const qs = new URLSearchParams(location.search);
     const id = qs.get("id");
     const proj = (window.PROJECTS || []).find(p => p.id === id) || null;
@@ -51,14 +60,14 @@
       descEl.textContent = "This project id doesn’t exist.";
       sectionsEl.innerHTML = "";
     } else {
-      document.title = proj.title;
-      titleEl.textContent = proj.title;
+      document.title = proj.title || "Project";
+      titleEl.textContent = proj.title || "";
       descEl.textContent = proj.desc || "";
       heroBg.style.backgroundImage = proj.heroImage ? `url("${proj.heroImage}")` : "none";
 
       tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
 
-      const btn = (label, href) => `<a class="btn small" href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
+      const btn = (label, href) => `<a class="btn small" href="${href}" target="_blank" rel="noreferrer noopener">${label}</a>`;
       const btns = [];
       if (proj.repo) btns.push(btn("Repo", proj.repo));
       if (proj.live) btns.push(btn("Open Live Site", proj.live));
@@ -82,7 +91,7 @@
           <div class="teaser-inner" style="width:100%;margin:0 0 14px;--panel-bg:none;">
             <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px;">
               <h2 style="margin:0;font-size:22px;">${p.label || "PDF"}</h2>
-              <a class="btn small" href="${p.url}" target="_blank" rel="noreferrer">Open PDF</a>
+              <a class="btn small" href="${p.url}" target="_blank" rel="noreferrer noopener">Open PDF</a>
             </div>
             <div class="player" style="height:min(75vh,860px);">
               <iframe src="${p.url}" loading="lazy"></iframe>
@@ -97,7 +106,7 @@
           <div class="teaser-inner" style="width:100%;margin:0 0 14px;--panel-bg:none;">
             <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px;">
               <h2 style="margin:0;font-size:22px;">${v.label || "Video"}</h2>
-              <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noreferrer">Open on YouTube</a>
+              <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noreferrer noopener">Open on YouTube</a>
             </div>
             <div class="player" style="height:min(70vh,720px);">
               <iframe
