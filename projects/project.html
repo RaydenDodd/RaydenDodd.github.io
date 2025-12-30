@@ -50,7 +50,7 @@ const qs = new URLSearchParams(location.search)
 const id = qs.get("id")
 const proj = (window.PROJECTS || []).find(p => p.id === id)
 
-const viewer = "https://cdn.jsdelivr.net/gh/mozilla/pdf.js@v5.4.530/web/viewer.html"
+const viewer = "https://unpkg.com/pdfjs-dist@5.4.530/web/viewer.html"
 
 const titleEl = document.getElementById("title")
 const descEl = document.getElementById("desc")
