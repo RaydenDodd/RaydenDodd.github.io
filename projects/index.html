@@ -3,32 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Projects</title>
-  <link rel="stylesheet" href="../css/styles.css" />
+  <title>Projects • Rayden Dodd</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <div class="nav">
-    <div class="brand"><a href="../">Rayden Dodd</a></div>
-    <div class="nav-right">
-      <a class="active" href="./">Projects</a>
-      <a href="../games/">Games</a>
-      <a href="../#contact">Contact</a>
+  <header class="nav">
+    <div class="nav-left">
+      <a class="brand" href="../index.html">Rayden Dodd</a>
     </div>
-  </div>
+    <nav class="nav-right">
+      <a class="active" href="./">Projects</a>
+      <a href="../games.html">Games</a>
+      <a href="../index.html#contact">Contact</a>
+    </nav>
+  </header>
 
   <main class="page">
     <h1 style="margin:6px 0 10px;">Projects</h1>
     <p class="muted" style="margin:0 0 18px;">Featured work, writeups, and demos.</p>
+
     <div id="grid" class="card-grid"></div>
   </main>
 
+  <footer class="footer">
+    <span>© <span id="year"></span> Rayden Dodd</span>
+  </footer>
+
   <script src="./projects.js"></script>
   <script>
+    const y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
     const grid = document.getElementById("grid");
-    const items = (window.PROJECTS || []).filter(p => p.id);
+    const items = (window.PROJECTS || []).filter(p => p && p.id);
 
     grid.innerHTML = items.map(p => {
-      const tags = (p.tags || []).slice(0, 6).map(t => `<span class="tag">${t}</span>`).join("");
+      const tags = (p.tags || []).slice(0, 8).map(t => `<span class="tag">${t}</span>`).join("");
       const href = `./project.html?id=${encodeURIComponent(p.id)}`;
       return `
         <a class="card" href="${href}">
