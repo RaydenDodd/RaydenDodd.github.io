@@ -4,30 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Project</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
 <header class="nav">
   <div class="nav-left">
-    <a class="brand" href="../index.html">Rayden Dodd</a>
+    <a class="brand" href="/index.html">Rayden Dodd</a>
   </div>
   <nav class="nav-right">
-    <a class="active" href="./index.html">Projects</a>
-    <a href="../games.html">Games</a>
-    <a href="../index.html#contact">Contact</a>
+    <a class="active" href="/projects/index.html">Projects</a>
+    <a href="/games.html">Games</a>
+    <a href="/index.html#contact">Contact</a>
   </nav>
 </header>
 
 <main class="page">
 
-  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:18px;">
+  <div id="banner" style="display:none;margin-bottom:18px;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);"></div>
+
+  <a class="muted" href="/projects/index.html" style="display:inline-block;margin-bottom:18px;">
     ← Back to Projects
   </a>
 
   <section class="teaser">
     <div class="teaser-inner" style="--panel-bg:none;">
-      <h1 id="title" style="margin:0 0 6px;"></h1>
+      <h1 id="title" style="margin:0 0 6px;">Loading…</h1>
       <p id="desc" class="muted" style="margin:0 0 14px;"></p>
       <div id="tags" class="tag-row"></div>
       <div id="links" class="card-actions" style="margin-top:14px;"></div>
@@ -42,15 +44,38 @@
   <span>© <span id="year"></span> Rayden Dodd</span>
 </footer>
 
-<script defer src="./projects.js"></script>
-<script defer>
+<script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
+  const banner = document.getElementById("banner");
+  const showBanner = (msg) => {
+    banner.style.display = "block";
+    banner.textContent = msg;
+  };
+
+  window.addEventListener("error", (e) => {
+    showBanner("JS error: " + (e && e.message ? e.message : "unknown"));
+  });
+
+  window.addEventListener("unhandledrejection", (e) => {
+    showBanner("Promise error: " + (e && e.reason ? e.reason : "unknown"));
+  });
+</script>
+
+<script defer src="/projects/projects.js"></script>
+
+<script defer>
   const titleEl = document.getElementById("title");
   const descEl = document.getElementById("desc");
   const tagsEl = document.getElementById("tags");
   const linksEl = document.getElementById("links");
   const sectionsEl = document.getElementById("sections");
+  const banner = document.getElementById("banner");
+
+  const showBanner = (msg) => {
+    banner.style.display = "block";
+    banner.textContent = msg;
+  };
 
   const escapeHtml = (s) => String(s ?? "")
     .replaceAll("&", "&amp;")
@@ -69,104 +94,90 @@
     return u + "#toolbar=1&navpanes=0&scrollbar=1";
   };
 
-  const showNotFound = (msg) => {
-    titleEl.textContent = "Page error";
-    descEl.textContent = msg;
-    sectionsEl.innerHTML = `
-      <section class="teaser">
-        <div class="teaser-inner" style="--panel-bg:none;">
-          <h2>Fix</h2>
-          <p class="muted" style="margin:0;">${escapeHtml(msg)}</p>
-          <div style="margin-top:12px;">
-            <a class="btn small" href="./projects.js" target="_blank" rel="noopener noreferrer">Open projects.js</a>
-          </div>
-        </div>
-      </section>
-    `;
-  };
+  const id = new URLSearchParams(location.search).get("id");
 
-  try {
-    if (!window.PROJECTS || !Array.isArray(window.PROJECTS)) {
-      showNotFound("projects.js didn’t load. Make sure /projects/projects.js exists and is in the same folder as project.html.");
-      throw new Error("PROJECTS missing");
-    }
-
-    const id = new URLSearchParams(location.search).get("id");
+  if (!id) {
+    titleEl.textContent = "Missing project id";
+    descEl.textContent = "Open Projects and click a project card again.";
+    showBanner("URL missing ?id=. Example: /projects/project.html?id=wmata-forecasting");
+  } else if (!window.PROJECTS || !Array.isArray(window.PROJECTS)) {
+    titleEl.textContent = "projects.js did not load";
+    descEl.textContent = "Check /projects/projects.js exists and is publicly accessible.";
+    showBanner("Try opening /projects/projects.js directly in your browser. If that 404s, path is wrong or file missing.");
+  } else {
     const proj = window.PROJECTS.find(p => p.id === id);
 
     if (!proj) {
       titleEl.textContent = "Project not found";
-      descEl.textContent = "Go back and click a project from the Projects list.";
-      return;
+      descEl.textContent = "That id does not exist in projects.js.";
+      showBanner("id=" + id + " not found in window.PROJECTS");
+    } else {
+      document.title = proj.title || "Project";
+      titleEl.textContent = proj.title || "";
+      descEl.textContent = proj.desc || "";
+
+      tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+
+      const buttons = [];
+      if (proj.repo) buttons.push(btn("Repo", proj.repo));
+      if (proj.live) buttons.push(btn("Live Site", proj.live));
+      linksEl.innerHTML = buttons.join("");
+
+      const blocks = [];
+
+      (proj.sections || []).forEach(s => {
+        blocks.push(`
+          <section class="teaser">
+            <div class="teaser-inner" style="--panel-bg:none;">
+              <h2>${escapeHtml(s.heading)}</h2>
+              <p class="muted">${escapeHtml(s.body)}</p>
+            </div>
+          </section>
+        `);
+      });
+
+      (proj.pdfs || []).forEach(p => {
+        const pdfUrl = ensurePdfUrl(p.url);
+        const openUrl = p.open || p.url;
+        blocks.push(`
+          <section class="teaser">
+            <div class="teaser-inner" style="--panel-bg:none;">
+              <h2>${escapeHtml(p.label)}</h2>
+              <div style="height:80vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
+                <embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">
+              </div>
+              <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+                <a class="btn small" href="${openUrl}" target="_blank" rel="noopener noreferrer">Open</a>
+              </div>
+            </div>
+          </section>
+        `);
+      });
+
+      (proj.youtube || []).forEach(v => {
+        blocks.push(`
+          <section class="teaser">
+            <div class="teaser-inner" style="--panel-bg:none;">
+              <h2>${escapeHtml(v.label)}</h2>
+              <div style="height:70vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.id)}"
+                  width="100%"
+                  height="100%"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+              </div>
+              <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+                <a class="btn small" href="https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+              </div>
+            </div>
+          </section>
+        `);
+      });
+
+      sectionsEl.innerHTML = blocks.join("");
     }
-
-    document.title = proj.title || "Project";
-    titleEl.textContent = proj.title || "";
-    descEl.textContent = proj.desc || "";
-
-    tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
-
-    const buttons = [];
-    if (proj.repo) buttons.push(btn("Repo", proj.repo));
-    if (proj.live) buttons.push(btn("Live Site", proj.live));
-    linksEl.innerHTML = buttons.join("");
-
-    const blocks = [];
-
-    (proj.sections || []).forEach(s => {
-      blocks.push(`
-        <section class="teaser">
-          <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${escapeHtml(s.heading)}</h2>
-            <p class="muted">${escapeHtml(s.body)}</p>
-          </div>
-        </section>
-      `);
-    });
-
-    (proj.pdfs || []).forEach(p => {
-      const pdfUrl = ensurePdfUrl(p.url);
-      const openUrl = p.open || p.url;
-      blocks.push(`
-        <section class="teaser">
-          <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${escapeHtml(p.label)}</h2>
-            <div style="height:80vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
-              <embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">
-            </div>
-            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-              <a class="btn small" href="${openUrl}" target="_blank" rel="noopener noreferrer">Open</a>
-            </div>
-          </div>
-        </section>
-      `);
-    });
-
-    (proj.youtube || []).forEach(v => {
-      blocks.push(`
-        <section class="teaser">
-          <div class="teaser-inner" style="--panel-bg:none;">
-            <h2>${escapeHtml(v.label)}</h2>
-            <div style="height:70vh;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);">
-              <iframe
-                src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.id)}"
-                width="100%"
-                height="100%"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy"></iframe>
-            </div>
-            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-              <a class="btn small" href="https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-            </div>
-          </div>
-        </section>
-      `);
-    });
-
-    sectionsEl.innerHTML = blocks.join("");
-  } catch (e) {
-    if (!sectionsEl.innerHTML) showNotFound(String(e && e.message ? e.message : e));
   }
 </script>
 
