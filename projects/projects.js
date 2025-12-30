@@ -8,11 +8,11 @@ window.PROJECTS = [
     sections: [
       {
         heading: "Overview",
-        body: "Compared multiple forecasting approaches for WMATA Metrorail ridership using historical data with calendar and weather features."
+        body: "Compared multiple forecasting approaches for WMATA Metrorail ridership using historical entries with weather and calendar features. Built baselines, trained models, and evaluated error behavior."
       },
       {
         heading: "Deliverables",
-        body: "Proposal and final paper embedded below."
+        body: "Proposal and final report are embedded below."
       }
     ],
     pdfs: [
@@ -28,18 +28,21 @@ window.PROJECTS = [
       }
     ]
   },
-
   {
     id: "wmata-visualization",
     title: "WMATA Ridership Dashboard",
-    desc: "Interactive Dash and Plotly dashboard for WMATA ridership analysis.",
-    tags: ["Python", "Dash", "Plotly", "Data Visualization", "Docker"],
+    desc: "Interactive Dash and Plotly dashboard for WMATA ridership analysis, deployed as a containerized web application.",
+    tags: ["Python", "Dash", "Plotly", "Data Visualization", "Docker", "Cloud"],
     repo: "https://github.com/RaydenDodd/WMATA-Visualization",
     live: "https://dashapp-278644791327.us-east1.run.app",
     sections: [
       {
         heading: "Overview",
-        body: "Interactive visualization of WMATA ridership data from 2012–2025."
+        body: "Interactive visualization of WMATA ridership data from 2012–2025, including cleaning, outlier detection, dimensionality reduction, transformations, and statistical summaries."
+      },
+      {
+        heading: "Deliverables",
+        body: "Final report embedded below. Presentation slides will be added."
       }
     ],
     pdfs: [
@@ -50,27 +53,29 @@ window.PROJECTS = [
       }
     ]
   },
-
   {
     id: "distracted-driver",
     title: "Distracted Driver Detection",
-    desc: "Computer vision system to classify driver behavior states.",
-    tags: ["Computer Vision", "CNN", "PyTorch"],
+    desc: "Computer vision system to classify driver behavior states from images and video.",
+    tags: ["Computer Vision", "CNN", "ResNet-50", "Transfer Learning", "Optical Flow", "PyTorch"],
     repo: "https://github.com/RaydenDodd/distracted-driver-detection",
     live: "https://raydendodd.github.io/distracted-driver-detection/",
     noDetailPage: true
   },
-
   {
     id: "engine-detection",
     title: "Engine Detection",
-    desc: "Virginia Tech Major Design Experience project sponsored by General Dynamics.",
-    tags: ["Audio ML", "Classification", "MFCC"],
+    desc: "Virginia Tech Major Design Experience project sponsored by General Dynamics focused on engine audio classification.",
+    tags: ["Python", "Audio ML", "MFCC", "Classification", "Major Design Experience", "General Dynamics"],
     repo: "https://github.com/RaydenDodd/engine-detection",
     sections: [
       {
         heading: "Overview",
-        body: "Engine audio classification project with full documentation and demo."
+        body: "Major Design Experience project to build and evaluate an engine audio classifier with full documentation and demo."
+      },
+      {
+        heading: "Deliverables",
+        body: "Paper, binder, presentation slides, poster, and demo video are included below."
       }
     ],
     pdfs: [
@@ -78,6 +83,16 @@ window.PROJECTS = [
         label: "IEEE Journal Article",
         url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/IEEE%20Journal%20Article%20Engine%20Detection.pdf",
         open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/IEEE%20Journal%20Article%20Engine%20Detection.pdf"
+      },
+      {
+        label: "Final Project Binder",
+        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/Final%20Project%20Binder.pdf",
+        open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/Final%20Project%20Binder.pdf"
+      },
+      {
+        label: "Expo Presentation",
+        url: "https://raw.githubusercontent.com/RaydenDodd/engine-detection/main/deliverables/Expo%20presentation.pdf",
+        open: "https://github.com/RaydenDodd/engine-detection/blob/main/deliverables/Expo%20presentation.pdf"
       },
       {
         label: "Expo Poster",
