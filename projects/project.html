@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="nav">
+    <div class="brand"><a href="../">Rayden Dodd</a></div>
+    <div class="nav-right">
+      <a class="active" href="./">Projects</a>
+      <a href="../games/">Games</a>
+      <a href="../#contact">Contact</a>
+    </div>
+  </div>
+
+  <main class="page" style="padding-top:18px;">
+    <a class="muted" href="./" style="display:inline-block;margin-bottom:14px;">← Back to Projects</a>
+
+    <section id="hero" class="teaser-inner" style="width:min(1200px,100%);margin:0 auto 18px; --panel-bg:none;">
+      <div id="heroBg" style="position:absolute;inset:0;background:center/cover no-repeat;opacity:.55;filter:saturate(1.05) contrast(1.05);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(rgba(10,10,20,.66), rgba(10,10,20,.86));"></div>
+      <div style="position:relative;">
+        <h1 id="title" style="margin:0 0 8px;font-size:clamp(28px,3vw,44px);"></h1>
+        <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+        <div id="tags" class="tag-row" style="margin:0 0 14px;"></div>
+        <div id="links" class="card-actions" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+      </div>
+    </section>
+
+    <section id="sections" style="width:min(1200px,100%);margin:0 auto;"></section>
+  </main>
+
+  <script src="./projects.js"></script>
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const id = qs.get("id");
+    const proj = (window.PROJECTS || []).find(p => p.id === id) || null;
+
+    const titleEl = document.getElementById("title");
+    const descEl = document.getElementById("desc");
+    const tagsEl = document.getElementById("tags");
+    const linksEl = document.getElementById("links");
+    const sectionsEl = document.getElementById("sections");
+    const heroBg = document.getElementById("heroBg");
+
+    if (!proj) {
+      titleEl.textContent = "Project not found";
+      descEl.textContent = "This project id doesn’t exist.";
+      sectionsEl.innerHTML = "";
+    } else {
+      document.title = proj.title;
+      titleEl.textContent = proj.title;
+      descEl.textContent = proj.desc || "";
+      heroBg.style.backgroundImage = proj.heroImage ? `url("${proj.heroImage}")` : "none";
+
+      tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+
+      const btn = (label, href) => `<a class="btn small" href="${href}" target="_blank" rel="noreferrer">${label}</a>`;
+      const btns = [];
+      if (proj.repo) btns.push(btn("Repo", proj.repo));
+      if (proj.live) btns.push(btn("Open Live Site", proj.live));
+      linksEl.innerHTML = btns.join("");
+
+      const sec = [];
+
+      (proj.sections || []).forEach(s => {
+        sec.push(`
+          <section class="teaser" style="padding:16px 0;border-top:0;">
+            <div class="teaser-inner" style="width:100%;margin:0;--panel-bg:none;">
+              <h2 style="margin:0 0 8px;font-size:24px;">${s.heading || ""}</h2>
+              <p class="muted" style="margin:0;">${s.body || ""}</p>
+            </div>
+          </section>
+        `);
+      });
+
+      if ((proj.pdfs || []).length) {
+        const pdfBlocks = proj.pdfs.map(p => `
+          <div class="teaser-inner" style="width:100%;margin:0 0 14px;--panel-bg:none;">
+            <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px;">
+              <h2 style="margin:0;font-size:22px;">${p.label || "PDF"}</h2>
+              <a class="btn small" href="${p.url}" target="_blank" rel="noreferrer">Open PDF</a>
+            </div>
+            <div class="player" style="height:min(75vh,860px);">
+              <iframe src="${p.url}" loading="lazy"></iframe>
+            </div>
+          </div>
+        `).join("");
+        sec.push(`<section class="teaser" style="padding:16px 0;border-top:0;">${pdfBlocks}</section>`);
+      }
+
+      if ((proj.youtube || []).length) {
+        const ytBlocks = proj.youtube.map(v => `
+          <div class="teaser-inner" style="width:100%;margin:0 0 14px;--panel-bg:none;">
+            <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px;">
+              <h2 style="margin:0;font-size:22px;">${v.label || "Video"}</h2>
+              <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noreferrer">Open on YouTube</a>
+            </div>
+            <div class="player" style="height:min(70vh,720px);">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${v.id}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy"></iframe>
+            </div>
+          </div>
+        `).join("");
+        sec.push(`<section class="teaser" style="padding:16px 0;border-top:0;">${ytBlocks}</section>`);
+      }
+
+      sectionsEl.innerHTML = sec.join("");
+    }
+  </script>
+</body>
+</html>
