@@ -56,6 +56,12 @@
   const linksEl = document.getElementById("links");
   const sectionsEl = document.getElementById("sections");
 
+  const btn = (label, href) =>
+    `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+
+  const pdfEmbedSrc = (rawUrl) =>
+    `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(rawUrl)}`;
+
   if (!proj) {
     titleEl.textContent = "Project not found";
     descEl.textContent = "This project does not exist.";
@@ -67,9 +73,6 @@
     tagsEl.innerHTML = (proj.tags || [])
       .map(t => `<span class="tag">${t}</span>`)
       .join("");
-
-    const btn = (label, href) =>
-      `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
 
     const buttons = [];
     if (proj.repo) buttons.push(btn("Repo", proj.repo));
@@ -90,12 +93,13 @@
     });
 
     (proj.pdfs || []).forEach(p => {
+      const embed = pdfEmbedSrc(p.url);
       blocks.push(`
         <section class="teaser">
           <div class="teaser-inner" style="--panel-bg:none;">
             <h2 style="margin:0 0 12px;">${p.label || "PDF"}</h2>
             <div class="player">
-              <iframe src="${p.url}" loading="lazy"></iframe>
+              <iframe src="${embed}" loading="lazy"></iframe>
             </div>
             <div style="margin-top:12px;display:flex;justify-content:flex-end;">
               <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">
