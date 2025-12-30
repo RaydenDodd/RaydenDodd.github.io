@@ -27,10 +27,10 @@
 
   <section class="teaser">
     <div class="teaser-inner">
-      <h1 id="title"></h1>
-      <p id="desc" class="muted"></p>
+      <h1 id="title" style="margin:0 0 6px;"></h1>
+      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
       <div id="tags" class="tag-row"></div>
-      <div id="links" class="card-actions"></div>
+      <div id="links" class="card-actions" style="margin-top:14px;"></div>
     </div>
   </section>
 
@@ -42,79 +42,112 @@
   <span>© <span id="year"></span> Rayden Dodd</span>
 </footer>
 
-<script src="./projects.js"></script>
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
+<script defer src="./projects.js"></script>
+<script defer>
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const id = new URLSearchParams(location.search).get("id");
-const proj = (window.PROJECTS || []).find(p => p.id === id);
+  const titleEl = document.getElementById("title");
+  const descEl = document.getElementById("desc");
+  const tagsEl = document.getElementById("tags");
+  const linksEl = document.getElementById("links");
+  const sectionsEl = document.getElementById("sections");
 
-const titleEl = document.getElementById("title");
-const descEl = document.getElementById("desc");
-const tagsEl = document.getElementById("tags");
-const linksEl = document.getElementById("links");
-const sectionsEl = document.getElementById("sections");
-
-if (!proj) {
-  titleEl.textContent = "Project not found";
-  return;
-}
-
-document.title = proj.title;
-titleEl.textContent = proj.title;
-descEl.textContent = proj.desc || "";
-
-tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
-
-const btn = (l,h) => `<a class="btn small" href="${h}" target="_blank">${l}</a>`;
-linksEl.innerHTML = [
-  proj.repo ? btn("Repo", proj.repo) : "",
-  proj.live ? btn("Live Site", proj.live) : ""
-].join("");
-
-const blocks = [];
-
-(proj.sections || []).forEach(s => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${s.heading}</h2>
-        <p class="muted">${s.body}</p>
-      </div>
-    </section>
-  `);
-});
-
-(proj.pdfs || []).forEach(p => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${p.label}</h2>
-        <div style="height:80vh;">
-          <embed src="${p.url}" type="application/pdf" width="100%" height="100%">
+  const showError = (msg) => {
+    titleEl.textContent = "Page error";
+    descEl.textContent = msg;
+    sectionsEl.innerHTML = `
+      <section class="teaser">
+        <div class="teaser-inner">
+          <h2>Debug</h2>
+          <pre style="white-space:pre-wrap;word-break:break-word;margin:0;">${msg}</pre>
         </div>
-        <div style="margin-top:12px;display:flex;justify-content:flex-end;">
-          <a class="btn small" href="${p.open}" target="_blank">Open</a>
-        </div>
-      </div>
-    </section>
-  `);
-});
+      </section>
+    `;
+  };
 
-(proj.youtube || []).forEach(v => {
-  blocks.push(`
-    <section class="teaser">
-      <div class="teaser-inner">
-        <h2>${v.label}</h2>
-        <iframe width="100%" height="480"
-          src="https://www.youtube-nocookie.com/embed/${v.id}"
-          allowfullscreen loading="lazy"></iframe>
-      </div>
-    </section>
-  `);
-});
+  try {
+    if (!window.PROJECTS || !Array.isArray(window.PROJECTS)) {
+      showError("projects.js did not load. Make sure this file exists at /projects/projects.js (same folder as project.html). Try opening https://raydendodd.github.io/projects/projects.js directly in your browser.");
+      throw new Error("projects.js missing");
+    }
 
-sectionsEl.innerHTML = blocks.join("");
+    const id = new URLSearchParams(location.search).get("id");
+    const proj = window.PROJECTS.find(p => p.id === id);
+
+    if (!proj) {
+      titleEl.textContent = "Project not found";
+      descEl.textContent = "No project matches this URL. Go back and click from the Projects list.";
+      return;
+    }
+
+    document.title = proj.title;
+    titleEl.textContent = proj.title;
+    descEl.textContent = proj.desc || "";
+
+    tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+
+    const btn = (label, href) => `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    const buttons = [];
+    if (proj.repo) buttons.push(btn("Repo", proj.repo));
+    if (proj.live) buttons.push(btn("Live Site", proj.live));
+    linksEl.innerHTML = buttons.join("");
+
+    const blocks = [];
+
+    (proj.sections || []).forEach(s => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner">
+            <h2>${s.heading}</h2>
+            <p class="muted">${s.body}</p>
+          </div>
+        </section>
+      `);
+    });
+
+    (proj.pdfs || []).forEach(p => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner">
+            <h2>${p.label}</h2>
+            <div style="height:80vh;">
+              <embed src="${p.url}" type="application/pdf" width="100%" height="100%">
+            </div>
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small" href="${p.open || p.url}" target="_blank" rel="noopener noreferrer">Open</a>
+            </div>
+          </div>
+        </section>
+      `);
+    });
+
+    (proj.youtube || []).forEach(v => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner">
+            <h2>${v.label}</h2>
+            <div style="height:70vh;">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${v.id}"
+                width="100%"
+                height="100%"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+            </div>
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+            </div>
+          </div>
+        </section>
+      `);
+    });
+
+    sectionsEl.innerHTML = blocks.join("");
+  } catch (e) {
+    showError(String(e && e.message ? e.message : e));
+  }
 </script>
 
 </body>
