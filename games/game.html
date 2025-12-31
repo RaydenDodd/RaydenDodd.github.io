@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tank Game • Rayden Dodd</title>
+  <title>Game • Rayden Dodd</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
@@ -27,67 +27,15 @@
 
   <section class="teaser">
     <div class="teaser-inner" style="--panel-bg:none;">
-      <h1 style="margin:0 0 6px;">Tank Game</h1>
-      <p class="muted" style="margin:0 0 14px;">
-        Top-down tank combat game inspired by classic Wii Tanks–style gameplay. 
-        Fight AI enemy tanks with distinct behaviors across multiple levels and a final boss.
-      </p>
+      <h1 id="title" style="margin:0 0 6px;">Loading…</h1>
+      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+      <div id="tags" class="tag-row"></div>
 
-      <div class="tag-row">
-        <span class="tag">JavaScript</span>
-        <span class="tag">Game Dev</span>
-        <span class="tag">AI</span>
-      </div>
-
-      <div class="card-actions" style="margin-top:16px;gap:10px;">
-        <a class="btn small" href="https://raydendodd.github.io/TankGame/" target="_blank" rel="noopener noreferrer">
-          ▶ Play Game
-        </a>
-        <a class="btn small" href="https://github.com/RaydenDodd/TankGame" target="_blank" rel="noopener noreferrer">
-          Repo
-        </a>
-      </div>
+      <div id="links" class="card-actions" style="margin-top:16px;gap:10px;"></div>
     </div>
   </section>
 
-  <section class="teaser">
-    <div class="teaser-inner" style="--panel-bg:none;">
-      <h2>Overview</h2>
-      <p class="muted">
-        Navigate maze-like levels, battle enemy tanks with different personalities,
-        and adapt to increasing difficulty. Enemies may chase, shoot, drop bombs,
-        or turn invisible depending on their type.
-      </p>
-    </div>
-  </section>
-
-  <section class="teaser">
-    <div class="teaser-inner" style="--panel-bg:none;">
-      <h2>How to Play</h2>
-      <p class="muted">
-        Move with WASD, aim with the mouse, and click to shoot. 
-        Drop bombs with the space bar. Enemies react dynamically based on distance
-        and line of sight.
-      </p>
-    </div>
-  </section>
-
-  <section class="teaser">
-    <div class="teaser-inner" style="--panel-bg:none;">
-      <h2>Screenshots</h2>
-
-      <div style="
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-        gap:14px;
-        margin-top:14px;
-      ">
-        <div class="plate" style="height:180px;"></div>
-        <div class="plate" style="height:180px;"></div>
-        <div class="plate" style="height:180px;"></div>
-      </div>
-    </div>
-  </section>
+  <div id="content"></div>
 
 </main>
 
@@ -95,8 +43,94 @@
   <span>© <span id="year"></span> Rayden Dodd</span>
 </footer>
 
+<script src="./games.js"></script>
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get("id");
+  const game = (window.GAMES || []).find(g => g.id === id);
+
+  const titleEl = document.getElementById("title");
+  const descEl = document.getElementById("desc");
+  const tagsEl = document.getElementById("tags");
+  const linksEl = document.getElementById("links");
+  const contentEl = document.getElementById("content");
+
+  const esc = (s) => String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+  const btn = (label, href) =>
+    `<a class="btn small" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`;
+
+  if (!id) {
+    titleEl.textContent = "Game not found";
+    descEl.textContent = "Missing game id in the URL.";
+    contentEl.innerHTML = "";
+  } else if (!game) {
+    titleEl.textContent = "Game not found";
+    descEl.textContent = `No game matches id: ${id}`;
+    contentEl.innerHTML = "";
+  } else {
+    document.title = `${game.title || "Game"} • Rayden Dodd`;
+
+    titleEl.textContent = game.title || "Game";
+    descEl.textContent = game.desc || "";
+
+    tagsEl.innerHTML = (game.tags || [])
+      .map(t => `<span class="tag">${esc(t)}</span>`)
+      .join("");
+
+    const buttons = [];
+    if (game.play) buttons.push(btn("▶ Play Game", game.play));
+    if (game.repo) buttons.push(btn("Repo", game.repo));
+    linksEl.innerHTML = buttons.join("");
+
+    const blocks = [];
+
+    (game.sections || []).forEach(s => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>${esc(s.heading)}</h2>
+            <p class="muted">${esc(s.body)}</p>
+          </div>
+        </section>
+      `);
+    });
+
+    if ((game.screenshots || []).length) {
+      const imgs = game.screenshots.map(im => `
+        <img
+          src="${esc(im.src)}"
+          alt="${esc(im.alt || "Game screenshot")}"
+          style="width:100%;height:190px;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.12);"
+        />
+      `).join("");
+
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>Gameplay Screenshots</h2>
+            <div style="
+              display:grid;
+              grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+              gap:16px;
+              margin-top:14px;
+            ">
+              ${imgs}
+            </div>
+          </div>
+        </section>
+      `);
+    }
+
+    contentEl.innerHTML = blocks.join("");
+  }
 </script>
 
 </body>
