@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Games</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <a class="brand" href="../index.html">Rayden Dodd</a>
+  </div>
+  <nav class="nav-right">
+    <a href="../projects/">Projects</a>
+    <a class="active" href="./index.html">Games</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="page">
+  <h1 style="margin:6px 0 10px;">Games</h1>
+  <p class="muted" style="margin:0 0 18px;">Playable JavaScript games and demos.</p>
+
+  <div id="grid" class="card-grid"></div>
+</main>
+
+<footer class="footer">
+  <span>© <span id="year"></span> Rayden Dodd</span>
+</footer>
+
+<script src="./games.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const grid = document.getElementById("grid");
+  const items = (window.GAMES || []).filter(g => g.id);
+
+  grid.innerHTML = items.map(g => {
+    const tags = (g.tags || []).slice(0, 8).map(t => `<span class="tag">${t}</span>`).join("");
+    const href = `./game.html?id=${encodeURIComponent(g.id)}`;
+    return `
+      <a class="card" href="${href}">
+        <h3>${g.title || ""}</h3>
+        <p class="muted">${g.desc || ""}</p>
+        <div class="tag-row">${tags}</div>
+        <div class="card-actions">
+          <span class="btn small">Open</span>
+        </div>
+      </a>
+    `;
+  }).join("");
+</script>
+
+</body>
+</html>
