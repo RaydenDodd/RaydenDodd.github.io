@@ -86,8 +86,8 @@
       .join("");
 
     const buttons = [];
-    if (game.play) buttons.push(btn("▶ Play Game", game.play));
-    if (game.repo) buttons.push(btn("Repo", game.repo));
+    if (proj.live) buttons.push(btn("▶ Live Site", proj.live));
+    if (proj.repo) buttons.push(btn("Repo", proj.repo));
     linksEl.innerHTML = buttons.join("");
 
     const blocks = [];
