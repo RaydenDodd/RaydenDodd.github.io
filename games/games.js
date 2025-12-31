@@ -3,7 +3,7 @@ window.GAMES = [
     id: "tank-game",
     title: "Tank Game",
     desc:
-      "Top-down tank combat game inspired by classic Wii Tanks–style gameplay. Fight AI enemy tanks with distinct behaviors across multiple levels and a final boss.",
+      "Top-down tank combat game inspired by classic Wii Tanks style gameplay. Fight AI enemy tanks with distinct behaviors across multiple levels and a final boss.",
     tags: ["JavaScript", "Game Dev", "AI"],
     repo: "https://github.com/RaydenDodd/TankGame",
     play: "https://raydendodd.github.io/TankGame/",
@@ -16,7 +16,7 @@ window.GAMES = [
       {
         heading: "How to Play",
         body:
-          "Move with WASD (W/S forward/back, A/D rotate), aim with the mouse, click to shoot. Space bar drops bombs (they explode after some time—shoot bombs to detonate faster). Enemies chase and shoot when you enter certain ranges."
+          "Move with WASD (W/S forward/back, A/D rotate), aim with the mouse, click to shoot. Space bar drops bombs (they explode after some time. Shoot bombs to detonate faster). Enemies chase and shoot when you enter certain ranges."
       }
     ],
     screenshots: [
