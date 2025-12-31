@@ -85,9 +85,9 @@
     tagsEl.innerHTML = (proj.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join("");
 
     const buttons = [];
-    if (proj.repo) buttons.push(btn("Repo", proj.repo));
-    if (proj.live) buttons.push(btn("▶ Live Site", proj.live, "play"));
-    linksEl.innerHTML = buttons.join("");
+if (proj.live) buttons.push(btn("▶ Live Site", proj.live));
+if (proj.repo) buttons.push(btn("Repo", proj.repo));
+linksEl.innerHTML = buttons.join("");
 
     const blocks = [];
 
