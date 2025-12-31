@@ -129,6 +129,35 @@
       `);
     }
 
+    if ((game.youtube || []).length) {
+      const vids = game.youtube.map(v => `
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2>${esc(v.label || "Video")}</h2>
+
+            <div class="player" style="margin-top:14px;">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${esc(v.id)}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+                style="width:100%;height:620px;border:0;border-radius:16px;">
+              </iframe>
+            </div>
+
+            <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+              <a class="btn small"
+                 href="https://www.youtube.com/watch?v=${esc(v.id)}"
+                 target="_blank"
+                 rel="noopener noreferrer">Open on YouTube</a>
+            </div>
+          </div>
+        </section>
+      `).join("");
+
+      blocks.push(vids);
+    }
+
     contentEl.innerHTML = blocks.join("");
   }
 </script>
