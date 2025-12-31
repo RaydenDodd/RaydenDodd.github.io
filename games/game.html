@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-left">
+    <a class="brand" href="../index.html">Rayden Dodd</a>
+  </div>
+  <nav class="nav-right">
+    <a href="../projects/">Projects</a>
+    <a class="active" href="./index.html">Games</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <a class="muted" href="./index.html" style="display:inline-block;margin-bottom:18px;">
+    ← Back to Games
+  </a>
+
+  <section class="teaser">
+    <div class="teaser-inner" style="--panel-bg:none;">
+      <h1 id="title" style="margin:0 0 6px;"></h1>
+      <p id="desc" class="muted" style="margin:0 0 14px;"></p>
+      <div id="tags" class="tag-row"></div>
+      <div id="links" class="card-actions" style="margin-top:14px;"></div>
+    </div>
+  </section>
+
+  <div id="sections"></div>
+
+</main>
+
+<footer class="footer">
+  <span>© <span id="year"></span> Rayden Dodd</span>
+</footer>
+
+<script src="./games.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get("id");
+  const game = (window.GAMES || []).find(g => g.id === id);
+
+  const titleEl = document.getElementById("title");
+  const descEl = document.getElementById("desc");
+  const tagsEl = document.getElementById("tags");
+  const linksEl = document.getElementById("links");
+  const sectionsEl = document.getElementById("sections");
+
+  if (!game) {
+    titleEl.textContent = "Game not found";
+    descEl.textContent = "This game does not exist.";
+  } else {
+    document.title = game.title;
+    titleEl.textContent = game.title;
+    descEl.textContent = game.desc || "";
+
+    tagsEl.innerHTML = (game.tags || []).map(t => `<span class="tag">${t}</span>`).join("");
+
+    const btn = (label, href) =>
+      `<a class="btn small" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+
+    const buttons = [];
+    if (game.repo) buttons.push(btn("Repo", game.repo));
+    if (game.play) buttons.push(btn("Play", game.play));
+    linksEl.innerHTML = buttons.join("");
+
+    const blocks = [];
+
+    (game.sections || []).forEach(s => {
+      blocks.push(`
+        <section class="teaser">
+          <div class="teaser-inner" style="--panel-bg:none;">
+            <h2 style="margin:0 0 8px;">${s.heading}</h2>
+            <p class="muted">${s.body}</p>
+          </div>
+        </section>
+      `);
+    });
+
+    sectionsEl.innerHTML = blocks.join("");
+  }
+</script>
+
+</body>
+</html>
