@@ -23,6 +23,9 @@ window.GAMES = [
       { src: "../assets/IMG_0217.png", alt: "Tank Game gameplay screenshot" },
       { src: "../assets/IMG_0218.png", alt: "Tank Game enemy AI screenshot" },
       { src: "../assets/IMG_0219.png", alt: "Tank Game level screenshot" }
+    ],
+    youtube: [
+      { id: "XolcPhJhPrc", label: "Tanks Game - Rayden & Tyler" }
     ]
   }
 ];
